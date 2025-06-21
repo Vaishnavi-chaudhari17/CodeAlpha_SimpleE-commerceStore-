@@ -1,0 +1,172 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}
+    🛍️ Our Store
+{% endblock %}
+
+{% block content %}
+   <style>
+     body {
+        background-color: #f2f2f2;
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .header {
+        background-color: #007bff;
+        padding: 18px 0;
+        text-align: center;
+        color: white;
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    .nav {
+        background-color: #ffffff;
+        padding: 12px 20px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        font-size: 15px;
+    }
+
+    .nav a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .product-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        padding: 20px 40px;
+        gap: 20px;
+    }
+
+    .product-card {
+        background: #fff;
+        width: 300px;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        text-align: center;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .product-card:hover {
+        transform: scale(1.03);
+    }
+
+    .product-card img {
+        width: 100%;
+        height: 230px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .product-card h2 {
+        margin: 10px 0 5px;
+        font-size: 20px;
+    }
+
+    .product-card p {
+        margin: 5px 0;
+        font-weight: bold;
+        color: green;
+        font-size: 16px;
+    }
+
+
+
+    .add-cart {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .buy-now {
+        background-color: #ffc107;
+        color: black;
+    }
+button {
+    background-color: #28a745; /* Green */
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+    
+    .header-banner {
+    background-color: #007bff;
+    text-align: center;
+    padding: 18px 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-text {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    font-family: 'Segoe UI', sans-serif;
+    display: inline-block;
+    letter-spacing: 1px;
+}
+
+</style>
+</head>
+<body>
+<div class="header-banner">
+    <span class="welcome-text">🛍️ Welcome to Our Store</span>
+</div>
+
+<div class="nav">
+    {% if user.is_authenticated %}
+        Hi, {{ user.username }} |
+        <a href="{% url 'logout' %}">Logout</a> |
+        <a href="{% url 'my_orders' %}">📦 My Orders</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+    {% endif %}
+</div>
+<div class="product-grid">
+
+    {% if products %}
+        {% for product in products %}
+            <div class="product-card">
+                <h2>{{ product.name }}</h2>
+                {% if product.image %}
+                    <a href="{% url 'product_detail' product.id %}" style="display: inline-block;">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" width="150" height="150">
+    </a>  <!-- Close <a> here -->
+                {% else %}
+                    <p>No image</p>
+                {% endif %}
+                    
+                <p>₹{{ product.price }}</p>
+                   
+                <!-- Add to Cart Button -->
+                <form method="POST" action="{% url 'add_to_cart' product.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Add to Cart</button>
+                </form>
+
+                
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No products found.</p>
+    {% endif %}
+</div>
+{% endblock %}
+</div>
+</body>
+</html>

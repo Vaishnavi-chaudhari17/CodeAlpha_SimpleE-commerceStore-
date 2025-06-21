@@ -1,0 +1,76 @@
+<!-- templates/store/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+    <title>{% block title %}E-Store{% endblock %}</title>
+    <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f9f9ff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 30px;
+      color: #6c63ff;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      max-width: 700px;
+      margin: 30px auto;
+    }
+
+    li {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-left: 5px solid #6c63ff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    li span {
+      display: block;
+      margin-top: 5px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    p {
+      text-align: center;
+      font-size: 18px;
+      color: #999;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>My Orders</h2>
+
+  {% if orders %}
+    <ul>
+      {% for order in orders %}
+        <li>
+          <strong>{{ order.product.name }}</strong> - ₹{{ order.total_price }} <br>
+          <span>🕒 Ordered on: {{ order.created_at|date:"d M Y, h:i A" }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>🛒 You have no orders yet.</p>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</body>
+</html>

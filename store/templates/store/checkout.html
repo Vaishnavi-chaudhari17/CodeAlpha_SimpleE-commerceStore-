@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout</title>
+</head>
+<body>
+  <h2>Checkout</h2>
+
+  {% if products %}
+    <ul>
+      {% for item in products %}
+        <li>{{ item.product.name }} - Quantity: {{ item.quantity }} - Subtotal: ₹{{ item.subtotal }}</li>
+      {% endfor %}
+    </ul>
+
+    <p><strong>Total Price:</strong> ₹{{ total_price }}</p>
+    <a href="{% url 'buy_now' product.id %}">Proceed to Buy</a>
+
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+</body>
+</html>

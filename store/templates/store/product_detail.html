@@ -1,0 +1,82 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<style>
+    .product-detail {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .product-detail img {
+        max-width: 100%;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .product-detail h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .product-detail p {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .product-detail strong {
+        color: #000;
+    }
+
+    .product-detail a {
+        display: inline-block;
+        margin: 20px 0 10px;
+        text-decoration: none;
+        color: #007bff;
+        font-weight: 600;
+    }
+
+    .product-detail a:hover {
+        text-decoration: underline;
+    }
+
+    .product-detail button {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .product-detail button:hover {
+        background-color: #218838;
+    }
+</style>
+
+<div class="product-detail">
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% endif %}
+    <h2>{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+    <p><strong>Price: ₹{{ product.price }}</strong></p>
+
+    <a href="{% url 'home' %}">⬅ Back to Home</a>
+
+    <form method="post" action="{% url 'add_to_cart' product.id %}">
+        {% csrf_token %}
+        <button type="submit">🛒 Add to Cart</button>
+    </form>
+</div>
+{% endblock %}
